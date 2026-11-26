@@ -1,17 +1,30 @@
 # 🎓 eeclass-exam-generator
-> **TronClass（暢課）與 智園 ee-class 線上測驗題庫生成、模擬題改寫與 CSV 轉換 AI Agent 技能 (Skill)**
+> **eeclass（易課教學平台 / 台灣數位學習科技 FormosaSoft）線上測驗題庫生成、模擬題改寫與 CSV 轉換 AI Agent 技能 (Skill)**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-3776AB.svg)](https://www.python.org/)
+[![Platform: ee-class](https://img.shields.io/badge/Platform-ee--class_%E6%98%93%E8%AA%B2%E5%B9%B3%E5%8F%B0-F59E0B.svg)](https://tw.formosasoft.com/km/1074)
 [![Agent Skill](https://img.shields.io/badge/AI_Agent-Skill-10B981.svg)](#🚀-各大-ai-agent-匯入與安裝指南)
 
-**`eeclass-exam-generator`** 是一套專為大專院校教師與助教設計的 AI Agent 技能包。它能讓各種 AI 程式助手（如 **Google Antigravity (AGY)**、**Claude Code**、**Cursor**、**OpenAI Codex CLI**、**Windsurf**、**Cline** 等）自動將教材、題庫或純文字題目轉換為 **100% 符合 TronClass / 智園 ee-class 線上測驗匯入規格的 27 欄位 CSV 檔案**，並完美解決線上測驗系統常見的排版崩潰、符號消失與數學公式誤判問題！
+**`eeclass-exam-generator`** 是一套專為採用 **eeclass（易課教學平台）** 之大專院校教師與助教設計的 AI Agent 技能包。它能讓各種 AI 程式助手（如 **Google Antigravity (AGY)**、**Claude Code**、**Cursor**、**OpenAI Codex CLI**、**Windsurf**、**Cline** 等）自動將教材、題庫或純文字題目轉換為 **100% 符合 ee-class（易課平台）線上測驗匯入規格的 27 欄位 CSV 檔案**，並完美解決線上測驗系統常見的排版崩潰、符號消失與數學公式誤判問題！
+
+---
+
+## 🏫 關於 eeclass（易課教學平台）
+
+| 項目 | 平台資訊 |
+| :--- | :--- |
+| **平台名稱** | **eeclass（易課教學平台）** |
+| **開發公司** | [台灣數位學習科技（FormosaSoft）](https://tw.formosasoft.com/km/1074) |
+| **代表產品** | ee-class（易課平台）、iLMS |
+| **系統特色** | 主打翻轉教室與 MOOC 課程，提供課堂即時回饋、影片測驗與學習數據分析。 |
+| **常見使用學校** | 國立中央大學、國立清華大學、逢甲大學、建國科技大學等（部分學校已陸續轉移或雙軌並行）。 |
 
 ---
 
 ## ✨ 為什麼需要這個技能？（解決痛點）
 
-當您將程式設計（Python、C++、Java 等）或理工科考題匯入 **TronClass / 智園 ee-class** 時，若使用一般 CSV 往往會遭遇以下四大災難，本技能皆已內建自動化防禦機制：
+當您將程式設計（Python、C++、Java 等）或理工科考題匯入 **ee-class（易課教學平台）** 時，若使用一般 CSV 往往會遭遇以下四大災難，本技能皆已內建自動化防禦機制：
 
 | 常見系統災難 | 發生原因 | 本技能自動化解決方案 |
 | :--- | :--- | :--- |
@@ -153,9 +166,9 @@ a = x1 * y1
 
 ---
 
-## 📋 匯入智園 ee-class / TronClass 系統步驟
+## 📋 匯入 ee-class（易課教學平台）系統步驟
 
-1. 登入您的 **ee-class** 或 **TronClass** 課程管理後台。
+1. 登入您的 **ee-class（易課教學平台）** 課程管理後台。
 2. 進入 **「測驗 / 題庫」** ➔ 點選 **「匯入」**。
 3. 選擇由本技能生成的 `.csv` 檔案（本技能自動採用 `utf-8-sig` 帶 BOM 編碼，Windows Excel 直接雙擊打開也不會亂碼，但**請勿用 Excel 另存覆蓋**以免遺失格式，請直接將產出的 CSV 匯入系統）。
 4. 匯入完成後，預覽題目即可看到完美的程式碼縮排、完整保留的 `""` 與 `[]` 符號，且不會有任何數學公式亂碼！

@@ -1,19 +1,25 @@
 ---
 name: eeclass-exam-generator
 description: >-
-  自動化生成與轉換符合 TronClass / 智園 ee-class 線上測驗系統匯入規範的 CSV 與 TXT 題庫與模擬考題。支援題目 100% 獨立性（防隨機抽題斷鏈）、Python 程式碼縮排 (&nbsp;)、精確換行 (<br>)、全特殊字元防護轉義（雙引號、中括號、大括號、大小於、錢字號、AND、反引號清除防 ASCIIMath 數學公式誤判）、27 欄標準結構與 UTF-8 with BOM (utf-8-sig) 編碼。
+  自動化生成與轉換符合台灣數位學習科技（FormosaSoft）ee-class（易課教學平台）線上測驗系統匯入規範的 CSV 與 TXT 題庫與模擬考題。支援題目 100% 獨立性（防隨機抽題斷鏈）、Python 程式碼縮排 (&nbsp;)、精確換行 (<br>)、全特殊字元防護轉義（雙引號、中括號、大括號、大小於、錢字號、AND、反引號清除防 ASCIIMath 數學公式誤判）、27 欄標準結構與 UTF-8 with BOM (utf-8-sig) 編碼。
 ---
 
-# ee-class / TronClass 線上測驗題庫生成與轉換技能
+# ee-class（易課教學平台）線上測驗題庫生成與轉換技能
 
-## 1. 概述 (Overview)
+## 1. 概述與平台背景 (Overview)
 
-本技能旨在提供高等教育與技術認證（如 Certiport ITS Python、APCS、IPA、TQC 等）在 **TronClass（暢課）** 與 **智園 ee-class** 線上學習平台上的題庫生成、格式轉換、同觀念模擬題改寫與排版防護。
+本技能旨在提供高等教育與技術認證（如 Certiport ITS Python、APCS、IPA、TQC 等）在 **eeclass（易課教學平台）** 線上學習平台上的題庫生成、格式轉換、同觀念模擬題改寫與排版防護。
 
-由於 TronClass / ee-class 的測驗引擎採用 Web HTML 渲染、內建 MathJax (ASCIIMath / LaTeX) 引擎與專用 CSV 解析器，若直接匯入一般純文字或含 Markdown 語法的 CSV，常會引發：
+### 關於 eeclass（易課教學平台）
+* **開發公司**：[台灣數位學習科技（FormosaSoft）](https://tw.formosasoft.com/km/1074)
+* **代表產品**：ee-class（易課平台）、iLMS
+* **系統特色**：主打翻轉教室與 MOOC 課程，提供課堂即時回饋、影片測驗與學習數據分析。
+* **常見使用學校**：國立中央大學、國立清華大學、逢甲大學、建國科技大學等（部分學校已陸續轉移或雙軌並行）。
+
+由於 ee-class（易課平台）的測驗引擎採用 Web HTML 渲染、內建 MathJax (ASCIIMath / LaTeX) 引擎與專用 CSV 解析器，若直接匯入一般純文字或含 Markdown 語法的 CSV，常會引發：
 1. **排版崩潰**：純文字換行（`\n`）與程式碼縮排（空格）被瀏覽器壓縮成單一行。
 2. **符號遺失**：雙引號 `""` 造成 HTML 屬性斷裂、中括號 `[]` 被誤判為克漏字標籤（Cloze Token）而整段抹除、大括號 `{}` 被誤判為範本變數、`<class>` 被當成 HTML 標籤隱藏、錢字號 `$` 觸發 LaTeX 數學公式亂碼。
-3. **ASCIIMath 數學公式劫持（重大陷阱）**：TronClass 內建的 MathJax 引擎開啟了 **ASCIIMath**，並將**反引號（`` ` ``）**作為預設公式定界符！若題目或解說中使用 Markdown 行內程式碼反引號（如 `` `int()` ``、`` `bool()` ``、`` `string` ``、`` `ValueError` ``），即使轉成 HTML 實體 `&#96;`，瀏覽器 DOM 解析後仍會還原為反引號並被 MathJax 攔截，導致：
+3. **ASCIIMath 數學公式劫持（重大陷阱）**：ee-class 內建的 MathJax 引擎開啟了 **ASCIIMath**，並將**反引號（`` ` ``）**作為預設公式定界符！若題目或解說中使用 Markdown 行內程式碼反引號（如 `` `int()` ``、`` `bool()` ``、`` `string` ``、`` `ValueError` ``），即使轉成 HTML 實體 `&#96;`，瀏覽器 DOM 解析後仍會還原為反引號並被 MathJax 攔截，導致：
    - `int()` 被當成積分符號渲染為 **`∫()`**
    - `bool()` 中的 `oo` 被當成無限大渲染為 **`b∞l()`**
    - `string` 中的 `in` 被當成屬於符號渲染為 **`str∈g`**
@@ -26,7 +32,7 @@ description: >-
 
 ## 2. CSV 標準格式規範 (27 欄位規格)
 
-TronClass / ee-class 題庫匯入必須遵循嚴格的 27 欄位結構，且編碼必須為 **`utf-8-sig`（帶 BOM 的 UTF-8）**，否則 Excel 或後端系統解析時會產生亂碼。
+ee-class（易課平台）題庫匯入必須遵循嚴格的 27 欄位結構，且編碼必須為 **`utf-8-sig`（帶 BOM 的 UTF-8）**，否則 Excel 或後端系統解析時會產生亂碼。
 
 ### 欄位結構定義
 
@@ -70,7 +76,7 @@ TronClass / ee-class 題庫匯入必須遵循嚴格的 27 欄位結構，且編�
 
 ## 4. 核心規範 2：全特殊字元 HTML 安全實體轉義與反引號清除
 
-所有寫入 CSV 的文字欄位（包含 **`題目`**、**`選項1~20`**、**`解說`**），均必須經過專用的 `format_for_tronclass()` 處理：
+所有寫入 CSV 的文字欄位（包含 **`題目`**、**`選項1~20`**、**`解說`**），均必須經過專用的 `format_for_eeclass()` / `format_for_tronclass()` 處理：
 
 | 原始符號 | 容易引發的系統問題 | 處理 / 轉義方式 | 前端還原效果 |
 | :---: | :--- | :---: | :---: |
@@ -94,7 +100,7 @@ TronClass / ee-class 題庫匯入必須遵循嚴格的 27 欄位結構，且編�
 import re
 
 def format_for_tronclass(text: str) -> str:
-    """將題目、選項或解說文字轉換為相容 TronClass / ee-class 的 HTML 安全格式"""
+    """將題目、選項或解說文字轉換為相容 ee-class（易課教學平台）的 HTML 安全格式"""
     if not text:
         return ''
     text = str(text)
